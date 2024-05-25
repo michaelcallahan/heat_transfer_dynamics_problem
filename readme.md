@@ -145,6 +145,8 @@ is the state vector.
 ```
 is the input vector.
 
+We assume that the states of temperature are directly measured, and define $C$ as the Identity matrix. There should be no direct feedthroug, so $D$ will be zero.
+
 ### Matrix $\mathbf{A}$
 
 ```math
@@ -160,6 +162,24 @@ is the input vector.
 \mathbf{B} = \begin{bmatrix}
 \frac{h_s A_{conv,s}}{\rho_s c_s V_s} & \frac{h_{he} A_{he}}{\rho_s c_s V_s} \\
 \frac{h_y A_{conv_y}}{\rho_y c_y V_y} & 0
+\end{bmatrix}
+```
+
+### Matrix $\mathbf{C}$
+
+```math
+\mathbf{C} = \begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+```
+
+### Matrix $\mathbf{D}$
+
+```math
+\mathbf{D} = \begin{bmatrix}
+0 & 0 \\
+0 & 0
 \end{bmatrix}
 ```
 
@@ -182,8 +202,38 @@ T_y
 \begin{bmatrix}
 T_{\infty} \\
 T_{he}
+\end{bmatrix} \\
+y &= \mathbf{C} = \begin{bmatrix}
+1 & 0 \\
+0 & 1
 \end{bmatrix}
+\begin{bmatrix}
+T_s \\
+T_y
+\end{bmatrix} \\
 \end{aligned}
+```
+
+### State Feedback Gain $K$
+
+To obtain the state feedback gain $K$, we solve the Continuous-time Algebraic Riccati Equation (CARE):
+
+```math
+P = \text{care}(A, B, Q, R)
+```
+
+The state feedback gain $K$ is then calculated as:
+
+```math
+K = R^{-1} B^T P
+```
+
+### Reference Tracking Gain $K_r$
+
+To obtain the reference tracking gain \$K_r$, we use the following formula:
+
+```math
+K_r = -\left( C \left( A - B K \right)^{-1} B \right)^{-1}
 ```
 
 ## State Space System Implementation
