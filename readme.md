@@ -13,84 +13,84 @@ The above figure shows the problem geometry, including a steel ball, an aluminum
 ## Geometric Parameters
 
 ### Steel Ball
-- **Outer radius (\( R_s \))**: 25mm to 100mm
-- **Inner radius (\( r_s \))**: 0mm to \( \frac{R_s}{2} \) (for a hollow ball)
-- **Volume (\( V_s \))**:
-  \[
+- **Outer radius ($R_s$)**: 25mm to 100mm
+- **Inner radius ($r_s$)**: 0mm to $\frac{R_s}{2}$ (for a hollow ball)
+- **Volume ($V_s $)**:
+```math
   V_s = \frac{4}{3} \pi (R_s^3 - r_s^3)
-  \]
-- **Surface area (for convection, \( A_{conv,s} \))**:
-  \[
+```
+- **Surface area (for convection, $A_{conv,s}$)**:
+```math
   A_{conv,s} = 2 \pi R_s^2
-  \]
+```
 
 ### Aluminum Yoke (Bowl)
-- **Radial thickness (\( t \))**: Varying from 5mm to 25mm
-- **Inner diameter**: \( R_s \)
-- **Outer diameter**: \( R_s + t \)
-- **Volume (\( V_y \))**:
-  \[
+- **Radial thickness ($t $)**: Varying from 5mm to 25mm
+- **Inner diameter**: $R_s$
+- **Outer diameter**: $R_s + t$
+- **Volume ($V_y $)**:
+```math
   V_y = \frac{2}{3} \pi \left((R_s + t)^3 - R_s^3\right)
-  \]
-- **Surface area (for convection, \( A_{conv_y} \))**:
-  \[
+```
+- **Surface area (for convection, $A_{conv_y} $)**:
+```math
   A_{conv_y} = 2 \pi (R_s + t)^2
-  \]
+```
 
 ### Rubber Silicone Lining
 - **Thickness**: 5mm
-- **Thermal conductivity (\( k_{\text{rubber}} \))**: 0.15 W/m·K
+- **Thermal conductivity ($k_{\text{rubber}} $)**: 0.15 W/m·K
 
 ## Heat Transfer Equations
 
 ### Convection
 1. **Steel Ball**:
-   \[
+```math
    Q_{conv,s} = h_s A_{conv,s} (T_{\infty} - T_s)
-   \]
+```
 2. **Aluminum Yoke**:
-   \[
+```math
    Q_{conv,y} = h_y A_{conv,y} (T_{\infty} - T_y)
-   \]
+```
 
 ### Conduction
 - **Between Steel Ball and Aluminum Yoke with Rubber Silicone Lining**:
-   \[
+```math
    Q_{cond} = \frac{k_{\text{rubber}} A_{cond}}{t_{\text{rubber}}} (T_s - T_y)
-   \]
-   Where \( t_{\text{rubber}} = 0.005 \) m.
+```
+   Where $t_{\text{rubber}} = 0.005$ m.
 
 ## Energy Balance Equations
 
 1. **Steel Ball**:
-   \[
+```math
    \rho_s c_s V_s \frac{dT_s}{dt} = h_s A_{conv,s} (T_{\infty} - T_s) - \frac{k_{\text{rubber}} A_{cond}}{t_{\text{rubber}}} (T_s - T_y)
-   \]
+```
 
 2. **Aluminum Yoke**:
-   \[
+```math
    \rho_y c_y V_y \frac{dT_y}{dt} = \frac{k_{\text{rubber}} A_{cond}}{t_{\text{rubber}}} (T_s - T_y) + h_y A_{conv_y} (T_{\infty} - T_y)
-   \]
+```
 
 ## Parameters
 
-- \( T_{\infty} \): Temperature of the surrounding air heated by the convective heater.
-- \( h_s \): Convective heat transfer coefficient between the steel ball and the surrounding air.
-- \( h_y \): Convective heat transfer coefficient between the aluminum yoke and the surrounding air.
-- \( k_s \): Thermal conductivity of steel.
-- \( k_y \): Thermal conductivity of aluminum.
-- \( k_{\text{rubber}} \): Thermal conductivity of the rubber silicone lining.
-- \( T_s \): Temperature of the steel ball.
-- \( T_y \): Temperature of the aluminum yoke.
-- \( \rho_s \): Density of steel.
-- \( \rho_y \): Density of aluminum.
-- \( c_s \): Specific heat capacity of steel.
-- \( c_y \): Specific heat capacity of aluminum.
-- \( t_{\text{rubber}} \): Thickness of the rubber silicone lining.
+- $T_{\infty} $: Temperature of the surrounding air heated by the convective heater.
+- $h_s $: Convective heat transfer coefficient between the steel ball and the surrounding air.
+- $h_y $: Convective heat transfer coefficient between the aluminum yoke and the surrounding air.
+- $k_s $: Thermal conductivity of steel.
+- $k_y $: Thermal conductivity of aluminum.
+- $k_{\text{rubber}} $: Thermal conductivity of the rubber silicone lining.
+- $T_s $: Temperature of the steel ball.
+- $T_y $: Temperature of the aluminum yoke.
+- $\rho_s $: Density of steel.
+- $\rho_y $: Density of aluminum.
+- $c_s $: Specific heat capacity of steel.
+- $c_y $: Specific heat capacity of aluminum.
+- $t_{\text{rubber}} $: Thickness of the rubber silicone lining.
 
 # Dynamics
 
-When we simulate the dynamics of this system to a step perturbation of temperature of surrounding air, \( T_{\infty} \), we also want to know how susceptible the dynamics are to changes in the mass and geometry properties of the system. Consider varying the inner and outer diameter of the steel ball as well as the thickness of the aluminum yoke. Running a simulation ```\py\open_loop_simulation.py```  with varying parameters will produce varying rise and settling time outputs.
+When we simulate the dynamics of this system to a step perturbation of temperature of surrounding air, $T_{\infty} $, we also want to know how susceptible the dynamics are to changes in the mass and geometry properties of the system. Consider varying the inner and outer diameter of the steel ball as well as the thickness of the aluminum yoke. Running a simulation ```\py\open_loop_simulation.py```  with varying parameters will produce varying rise and settling time outputs.
 
 ![Open-Loop Response](img/open_loop_response.png)
 
@@ -98,28 +98,28 @@ The above figure shows shaded regions of how the step responses vary depending o
 
 ## PID Controller Derivation and Formulation
 
-A PID controller is a control loop mechanism that calculates an error value as the difference between a desired setpoint and a measured process variable. The controller attempts to minimize the error by adjusting the process control inputs. The PID controller algorithm involves three separate parameters: the proportional, integral, and derivative terms, denoted as \( P \), \( I \), and \( D \), respectively.
+A PID controller is a control loop mechanism that calculates an error value as the difference between a desired setpoint and a measured process variable. The controller attempts to minimize the error by adjusting the process control inputs. The PID controller algorithm involves three separate parameters: the proportional, integral, and derivative terms, denoted as $P $, $I $, and $D $, respectively.
 
 ### PID Control Law
 
 The control law for a PID controller is given by:
-\[
+```math
 u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt}
-\]
+```
 where:
-- \( u(t) \) is the control output.
-- \( e(t) \) is the error at time \( t \), defined as \( e(t) = \text{setpoint} - \text{measurement} \).
-- \( K_p \) is the proportional gain.
-- \( K_i \) is the integral gain.
-- \( K_d \) is the derivative gain.
+- $u(t)$ is the control output.
+- $e(t)$ is the error at time $t$, defined as $e(t) = \text{setpoint} - \text{measurement}$.
+- $K_p$ is the proportional gain.
+- $K_i$ is the integral gain.
+- $K_d$ is the derivative gain.
 
 ### Discrete PID Algorithm
 
 In a discrete-time implementation, the PID control law can be approximated as:
-\[
+```math
 u[k] = K_p e[k] + K_i \sum_{i=0}^{k} e[i] \Delta t + K_d \frac{e[k] - e[k-1]}{\Delta t}
-\]
-where \( k \) is the current time step and \( \Delta t \) is the time step size.
+```
+where $k$ is the current time step and $\Delta t$ is the time step size.
 
 ### PID Controller Implementation
 
@@ -133,33 +133,39 @@ The figure above shows the closed-loop temperature responses and the control eff
 
 The state space representation can be written in the form:
 
-\[ \dot{\mathbf{x}} = \mathbf{A} \mathbf{x} + \mathbf{B} \mathbf{u} \]
+$$ \dot{\mathbf{x}} = \mathbf{A} \mathbf{x} + \mathbf{B} \mathbf{u} $$
 
 Where:
-- \(\mathbf{x} = \begin{bmatrix} T_s \\ T_y \end{bmatrix}\) is the state vector.
-- \(\mathbf{u} = \begin{bmatrix} T_{\infty} \\ T_{he} \end{bmatrix}\) is the input vector.
+```math
+\mathbf{x} = \begin{bmatrix} T_s \\ T_y \end{bmatrix} 
+```
+is the state vector.
+```math
+\mathbf{u} = \begin{bmatrix} T_{\infty} \\ T_{he} \end{bmatrix}
+```
+is the input vector.
 
-### Matrix \(\mathbf{A}\)
+### Matrix $\mathbf{A}$
 
-\[
+```math
 \mathbf{A} = \begin{bmatrix}
 -\frac{h_s A_{conv,s} + h_{he} A_{he} + k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_s c_s V_s} & \frac{k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_s c_s V_s} \\
 \frac{k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_y c_y V_y} & -\frac{h_y A_{conv_y} + k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_y c_y V_y}
 \end{bmatrix}
-\]
+```
 
-### Matrix \(\mathbf{B}\)
+### Matrix $\mathbf{B}$
 
-\[
+```math
 \mathbf{B} = \begin{bmatrix}
 \frac{h_s A_{conv,s}}{\rho_s c_s V_s} & \frac{h_{he} A_{he}}{\rho_s c_s V_s} \\
 \frac{h_y A_{conv_y}}{\rho_y c_y V_y} & 0
 \end{bmatrix}
-\]
+```
 
 ### Final State Space Equations
 
-\[
+```math
 \begin{aligned}
 \dot{\mathbf{x}} &= \begin{bmatrix}
 -\frac{h_s A_{conv,s} + h_{he} A_{he} + k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_s c_s V_s} & \frac{k_{\text{rubber}} A_{cond} / t_{\text{rubber}}}{\rho_s c_s V_s} \\
@@ -178,11 +184,11 @@ T_{\infty} \\
 T_{he}
 \end{bmatrix}
 \end{aligned}
-\]
+```
 
 ## State Space System Implementation
 
-We use the state space representation to derive the control law for the system. By solving the Continuous-time Algebraic Riccati Equation (CARE), we obtain the optimal state feedback gain \( K \). We also calculate the reference tracking gain \( K_r \) to track the desired reference temperature \( T_{\infty} \). Then, we put it all together and simulate the system as described in ```\py\closed_loop_simulation_state_space.py``` in order to compare how the closed loop response compares to the PID implementation.
+We use the state space representation to derive the control law for the system. By solving the Continuous-time Algebraic Riccati Equation (CARE), we obtain the optimal state feedback gain $K $. We also calculate the reference tracking gain $K_r$ to track the desired reference temperature $T_{\infty} $. Then, we put it all together and simulate the system as described in ```\py\closed_loop_simulation_state_space.py``` in order to compare how the closed loop response compares to the PID implementation.
 
 ![Closed-Loop Response Two Inputs](img/closed_loop_response_two_input.png)
 
